@@ -1,75 +1,48 @@
 package com.sheinkscode.taskmanager.service;
 
 import com.sheinkscode.taskmanager.model.Task;
+import com.sheinkscode.taskmanager.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
-    private final List<Task> tasks = new ArrayList<>();
 
-    private Integer nextId = 4;
+    private final TaskRepository taskRepository;
 
-
-    public TaskService(){
-        tasks.add(new Task(
-                1,
-                "Lære Spring Boot",
-                "Forstå controller og service",
-                false
-        ));
-        tasks.add(new Task(
-                2,
-                "Bygge Task API",
-                "Lag første endpoint",
-                false
-        ));
-        tasks.add(new Task(
-                3,
-                "Teste i Postman",
-                "Sjekke at /task virker",
-                true
-        ));
+    public TaskService(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 
 
     public List<Task> getAllTasks(){
-        return tasks;
+
+        return taskRepository.findAll();
     }
 
-    public Task getTaskById(Integer id){
-        for (Task task: tasks){
-            if(task.getId() == id){
-                return task;
-            }
-        }
-        return null;
+    public Task getTaskById(Long id){
+        Optional<Task> task = taskRepository.findById(id);
+        return task.orElse(null);
     }
 
     public Task createTask(Task newTask){
-        newTask.setId(nextId);
-        tasks.add(newTask);
-        nextId++;
-        return newTask;
+        return taskRepository.save(newTask);
     }
 
-    //public boolean deleteTask(int id){
-    //    return tasks.removeIf(task -> task.getId() == id);
-    //}
-
-    public boolean deleteTask(Integer id){
-        Task taskfound = getTaskById(id);
-        if(taskfound != null){
-            tasks.remove(taskfound);
+    
+    public boolean deleteTask(Long id){
+        if(taskRepository.existsById(id)){
+            taskRepository.deleteById(id);
             return true;
         }
         return false;
     }
 
 
-    public Task updateTask(Integer id, Task updatedTask){
+    public Task updateTask(Long id, Task updatedTask){
         Task existingTask = getTaskById(id);
 
         if(existingTask != null){
@@ -77,7 +50,7 @@ public class TaskService {
             existingTask.setDescription(updatedTask.getDescription());
             existingTask.setCompleted(updatedTask.isCompleted());
 
-            return existingTask;
+            return taskRepository.save(existingTask);
         }
 
         return null;

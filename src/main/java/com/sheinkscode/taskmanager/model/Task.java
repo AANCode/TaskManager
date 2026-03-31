@@ -1,7 +1,15 @@
 package com.sheinkscode.taskmanager.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table (name = "task")
 public class Task {
-    private Integer id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String title;
     private String description;
     private boolean completed;
@@ -11,18 +19,17 @@ public class Task {
     public Task() {
     }
 
-    public Task(Integer id, String title, String description, boolean completed) {
-        this.id = id;
+    public Task(String title, String description, boolean completed) {
         this.title = title;
         this.description = description;
         this.completed = completed;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

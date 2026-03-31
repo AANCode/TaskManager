@@ -2,6 +2,8 @@ package com.sheinkscode.taskmanager.controller;
 
 import com.sheinkscode.taskmanager.model.Task;
 import com.sheinkscode.taskmanager.service.TaskService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
- final TaskService taskService;
+ private final TaskService taskService;
 
 
     public TaskController(TaskService taskService){
@@ -18,37 +20,54 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getAllTasks(){
-     return taskService.getAllTasks();
+    public ResponseEntity<List<Task>> getAllTasks(){
+
+        List<Task> tasks = taskService.getAllTasks();
+
+        return ResponseEntity.ok(tasks);
     }
 
     @GetMapping("/{id}")
-    public Task getTaskById(@PathVariable int id) {
-        return taskService.getTaskById(id);
+    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+
+        Task task = taskService.getTaskById(id);
+
+        if(task == null){
+            return ResponseEntity.notFound().build();
+        }else {
+            return ResponseEntity.ok(task);
+        }
     }
 
     @PostMapping
-    public Task createTask(@RequestBody Task newTask){
-        return taskService.createTask(newTask);
+    public ResponseEntity<Task> createTask(@RequestBody Task newTask){
+        Task taskSaved = taskService.createTask(newTask);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskSaved);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTask(@PathVariable int id){
-        //return taskService.deleteTask(id);
+    public ResponseEntity<String> deleteTask(@PathVariable Long id){
 
         boolean deleted = taskService.deleteTask(id);
 
-        if (deleted){
-            return  "Tasken med id " + id + " ble slettet.";
+        if(deleted){
+            return ResponseEntity.ok("tasken med ID: " + id + " ble slettet");
         }else {
-            return "For en eller anne grunn så er tasken med id " + id + " ikke slettet";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kunne ikke slette: tasken med ID " + id + " finnes ikke");
         }
     }
 
     @PutMapping("/{id}")
-    public Task updateTask(@PathVariable int id,@RequestBody Task updatedTask){
+    public ResponseEntity<Task> updateTask(@PathVariable Long id,@RequestBody Task updatedTask){
 
-        return taskService.updateTask(id, updatedTask);
+        Task task = taskService.updateTask(id, updatedTask);
+
+        if(task == null){
+            return ResponseEntity.notFound().build();
+        }else {
+            return ResponseEntity.ok(task);
+        }
 
     }
 
