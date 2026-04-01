@@ -2,6 +2,7 @@ package com.sheinkscode.taskmanager.controller;
 
 import com.sheinkscode.taskmanager.model.Task;
 import com.sheinkscode.taskmanager.service.TaskService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task newTask){
+    public ResponseEntity<Task> createTask(@RequestBody @Valid Task newTask){
         Task taskSaved = taskService.createTask(newTask);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(taskSaved);
@@ -59,7 +60,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable Long id,@RequestBody Task updatedTask){
+    public ResponseEntity<Task> updateTask(@PathVariable Long id,@RequestBody @Valid Task updatedTask){
 
         Task task = taskService.updateTask(id, updatedTask);
 

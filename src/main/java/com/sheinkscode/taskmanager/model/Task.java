@@ -1,6 +1,8 @@
 package com.sheinkscode.taskmanager.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table (name = "task")
@@ -10,7 +12,12 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Size(min = 3, max = 100)
     private String title;
+
+    @NotBlank
+    @Size(min = 5, max = 500)
     private String description;
     private boolean completed;
 
