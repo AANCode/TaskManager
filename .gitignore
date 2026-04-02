@@ -1,33 +1,72 @@
+# --- Project docs ---
 HELP.md
+
+# --- Build output ---
 target/
-.mvn/wrapper/maven-wrapper.jar
+build/
+out/
+dist/
+
+# Keep nested build folders if intentionally needed
 !**/src/main/**/target/
 !**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-### STS ###
+# --- Maven wrapper ---
+.mvn/wrapper/maven-wrapper.jar
+
+# --- Logs ---
+*.log
+logs/
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Environment / secrets ---
+.env
+.env.*
+*.env
+*.local
+application.properties
+application-*.properties
+application.yml
+application-*.yml
+secrets.properties
+secrets.yml
+
+# --- Eclipse / STS ---
 .apt_generated
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
+# --- IntelliJ IDEA ---
+.idea/
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
+# --- NetBeans ---
 /nbproject/private/
 /nbbuild/
-/dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
+# --- VS Code ---
 .vscode/
+
+# --- Java ---
+*.class
+
+# --- Temporary files ---
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
