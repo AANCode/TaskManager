@@ -215,7 +215,7 @@ Validering feiler:
 
 ## Lisens
 
-Laget av Sheinks Code.
+Laget av AAN.
 
 Versjon: 0.0.1-SNAPSHOT
 
